@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+/* Stitches — bottle-green cloth, tape-measure yellow, chalk-white paper. */
+:root {
+  --bg: #f4f6f3;
+  --surface: #ffffff;
+  --surface-2: #eef2ee;
+  --ink: #15211d;
+  --muted: #5f6d67;
+  --line: #dfe5e0;
+  --primary: #1f4d43;
+  --primary-ink: #ffffff;
+  --primary-soft: #e3eee9;
+  --tape: #e5b22b;
+  --tape-ink: #2b2206;
+  --tape-soft: #fbf1d3;
+  --danger: #b4382f;
+  --danger-soft: #f8e4e1;
+  --ok: #2f7d4f;
+  --ok-soft: #e1f1e6;
+  --warn: #9a6a00;
+  --warn-soft: #fbefcf;
+  --info: #2c5d8f;
+  --info-soft: #e2ecf6;
+
+  --mq-fill: #fbfaf7;
+  --mq-shade: #dfe3dd;
+  --mq-stroke: #8e9b94;
+  --mq-seam: #b7c0bb;
+  --mq-guide: #1f4d43;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1412;
+    --surface: #141d1a;
+    --surface-2: #1b2622;
+    --ink: #e6eeea;
+    --muted: #93a39c;
+    --line: #26332e;
+    --primary: #6cc0a8;
+    --primary-ink: #0b1714;
+    --primary-soft: #1a2f29;
+    --tape: #f0c34a;
+    --tape-ink: #241b02;
+    --tape-soft: #3a3014;
+    --danger: #ef7d72;
+    --danger-soft: #3a1c19;
+    --ok: #6fcf97;
+    --ok-soft: #173325;
+    --warn: #f0c34a;
+    --warn-soft: #3a3014;
+    --info: #8ab8e8;
+    --info-soft: #182a3c;
+
+    --mq-fill: #2a3632;
+    --mq-shade: #18211e;
+    --mq-stroke: #5d6e67;
+    --mq-seam: #44544e;
+    --mq-guide: #6cc0a8;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-soft: var(--primary-soft);
+  --color-tape: var(--tape);
+  --color-tape-ink: var(--tape-ink);
+  --color-tape-soft: var(--tape-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Mannequin ---------- */
+.mq-body path,
+.mq-body ellipse {
+  stroke: var(--mq-stroke);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.mq-seam path {
+  fill: none;
+  stroke: var(--mq-seam);
+  stroke-width: 0.8;
+  stroke-dasharray: 2.5 2.5;
+}
+.mq-back {
+  fill: none;
+  stroke-width: 1;
+  stroke-dasharray: 2 2.2;
+}
+.mq-front {
+  fill: none;
+  stroke-linecap: round;
+}
+.mq-soft .mq-back {
+  stroke: var(--mq-guide);
+  opacity: 0.25;
+}
+.mq-soft .mq-front {
+  stroke: var(--mq-guide);
+  stroke-width: 1.4;
+  opacity: 0.55;
+}
+.mq-soft .mq-line {
+  stroke-dasharray: 3 3;
+}
+.mq-active .mq-back {
+  stroke: var(--tape);
+  opacity: 0.8;
+}
+.mq-active .mq-front {
+  stroke: var(--tape);
+  stroke-width: 3;
+}
+.mq-active .mq-dot {
+  fill: var(--tape);
+  stroke: var(--surface);
+  stroke-width: 1;
+}
+.mq-active {
+  animation: mq-pulse 1.6s ease-in-out infinite;
+}
+@keyframes mq-pulse {
+  50% {
+    opacity: 0.65;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mq-active {
+    animation: none;
+  }
+}
+
+/* Tape-measure strip used as a brand detail */
+.tape-strip {
+  background-color: var(--tape);
+  background-image:
+    repeating-linear-gradient(90deg, var(--tape-ink) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(90deg, var(--tape-ink) 0 1.5px, transparent 1.5px 40px);
+  background-size: 100% 35%, 100% 65%;
+  background-repeat: no-repeat;
+  background-position: top left, top left;
+}
+.stitch-border {
+  background-image: linear-gradient(90deg, var(--line) 50%, transparent 50%);
+  background-size: 10px 1px;
+  background-repeat: repeat-x;
+  height: 1px;
+}
