@@ -9,6 +9,8 @@ export type Tailor = {
   created_at: string;
   /** Missing until the latest schema.sql has been run; treat as "trial". */
   status?: AccountStatus;
+  /** Public link to the business logo, if one was uploaded. */
+  logo_url?: string | null;
 };
 
 export type AccountStatus = "trial" | "active" | "blocked";

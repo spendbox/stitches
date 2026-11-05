@@ -2,8 +2,9 @@ import Link from "next/link";
 import { ArrowRight, Ban, Clock, ShieldCheck, Users } from "lucide-react";
 import { getPayments, getTailors, monthlySeries, thisMonthKey, totalsByCurrency, monthKey } from "@/lib/adminData";
 import { date, money } from "@/lib/format";
-import { Avatar, Card } from "@/components/ui";
+import { Card } from "@/components/ui";
 import { AccountBadge, RevenueChart, SetupNotice, StatusActions } from "@/components/admin/AdminUI";
+import BusinessLogo from "@/components/BusinessLogo";
 
 export const metadata = { title: "Admin" };
 export const dynamic = "force-dynamic";
@@ -83,7 +84,7 @@ export default async function AdminHome() {
               {waiting.map((t) => (
                 <div key={t.id} className="flex flex-col gap-3 px-4 py-3 sm:px-5">
                   <Link href={`/admin/users/${t.id}`} className="flex min-w-0 items-center gap-3">
-                    <Avatar name={t.business_name} size="sm" />
+                    <BusinessLogo name={t.business_name} url={t.logo_url} size="sm" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-semibold">{t.business_name}</p>
                       <p className="truncate text-xs text-muted">Joined {date(t.created_at)} · {t.clients} clients</p>
@@ -107,7 +108,7 @@ export default async function AdminHome() {
         <div className="divide-y divide-line">
           {tailors.slice(0, 5).map((t) => (
             <Link key={t.id} href={`/admin/users/${t.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-surface-2 sm:px-5">
-              <Avatar name={t.business_name} size="sm" />
+              <BusinessLogo name={t.business_name} url={t.logo_url} size="sm" />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{t.business_name}</p>
                 <p className="truncate text-xs text-muted">{t.email}</p>

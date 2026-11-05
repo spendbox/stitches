@@ -91,6 +91,15 @@ do $$ begin
   end if;
 end $$;
 
+-- ---------- Business logos ----------
+-- Each business can upload its logo in Settings. Files live in a public storage
+-- bucket called "logos" (images only, up to 2 MB); the link is saved on the account.
+alter table public.tailors add column if not exists logo_url text;
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('logos', 'logos', true, 2097152, array['image/png', 'image/jpeg', 'image/webp'])
+on conflict (id) do update
+  set public = true, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
+
 -- ---------- Payments received from tailors (recorded by the admin) ----------
 create table if not exists public.payments (
   id          uuid primary key default gen_random_uuid(),

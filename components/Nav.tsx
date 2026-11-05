@@ -8,6 +8,7 @@ import { cx } from "./ui";
 import { ThemeButton } from "./ThemeToggle";
 import { logout } from "@/app/actions/auth";
 import PendingButton from "./PendingButton";
+import BusinessLogo from "./BusinessLogo";
 
 const items = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
@@ -16,7 +17,7 @@ const items = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export function Sidebar({ business, name }: { business: string; name: string }) {
+export function Sidebar({ business, name, logo }: { business: string; name: string; logo: string | null }) {
   const path = usePathname();
   return (
     <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line bg-surface px-4 py-6 lg:flex">
@@ -48,7 +49,8 @@ export function Sidebar({ business, name }: { business: string; name: string }) 
         })}
       </nav>
       <div className="mt-auto rounded-2xl bg-surface-2 p-3">
-        <div className="flex items-start gap-2">
+        <div className="flex items-start gap-2.5">
+          <BusinessLogo name={business} url={logo} size="sm" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-ink">{business}</p>
             <p className="truncate text-xs text-muted">{name}</p>
@@ -95,13 +97,18 @@ export function MobileBar() {
   );
 }
 
-export function MobileTop() {
+export function MobileTop({ business, logo }: { business: string; logo: string | null }) {
   return (
     <header className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-bg/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur lg:hidden">
       <Link href="/dashboard">
         <Logo />
       </Link>
-      <ThemeButton className="-mr-2" />
+      <div className="flex items-center gap-1">
+        <ThemeButton />
+        <Link href="/settings" aria-label={`${business} settings`}>
+          <BusinessLogo name={business} url={logo} size="sm" />
+        </Link>
+      </div>
     </header>
   );
 }

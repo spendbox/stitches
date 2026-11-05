@@ -2,8 +2,9 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { getTailors } from "@/lib/adminData";
 import { date } from "@/lib/format";
-import { Avatar, Card, cx, inputCls } from "@/components/ui";
+import { Card, cx, inputCls } from "@/components/ui";
 import { AccountBadge, SetupNotice, StatusActions } from "@/components/admin/AdminUI";
+import BusinessLogo from "@/components/BusinessLogo";
 
 export const metadata = { title: "Users · Admin" };
 export const dynamic = "force-dynamic";
@@ -66,7 +67,7 @@ export default async function AdminUsers({ searchParams }: { searchParams: Promi
             {shown.map((t) => (
               <div key={t.id} className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-5">
                 <Link href={`/admin/users/${t.id}`} className="flex min-w-0 flex-1 items-center gap-3">
-                  <Avatar name={t.business_name} size="sm" />
+                  <BusinessLogo name={t.business_name} url={t.logo_url} size="sm" />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <p className="truncate text-sm font-semibold hover:underline">{t.business_name}</p>
