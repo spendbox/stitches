@@ -67,10 +67,6 @@ const faqs = [
     a: "No. Onepad runs in your phone’s browser. You can add it to your home screen so it opens like an app.",
   },
   {
-    q: "How does payment work?",
-    a: "Every new account starts in trial mode with everything unlocked. When you’re ready, contact the admin and pay by transfer or cash. Your account is upgraded to full access as soon as payment is confirmed.",
-  },
-  {
     q: "Can I use inches and centimetres?",
     a: "Yes. Pick a default in Settings and switch any measurement set between inches and centimetres.",
   },
@@ -83,7 +79,7 @@ const faqs = [
 // Pre-built at deploy time and served from the edge, so it opens instantly.
 export const dynamic = "force-static";
 
-const start = { href: "/register", label: "Start free trial" };
+const start = { href: "/register", label: "Create your workshop" };
 
 export default function Landing() {
 
@@ -98,7 +94,6 @@ export default function Landing() {
           <nav className="ml-6 hidden items-center gap-6 text-sm font-medium text-muted md:flex">
             <a href="#features" className="hover:text-ink">Features</a>
             <a href="#how" className="hover:text-ink">How it works</a>
-            <a href="#pricing" className="hover:text-ink">Pricing</a>
             <a href="#faq" className="hover:text-ink">FAQ</a>
           </nav>
           <div className="ml-auto flex items-center gap-1 sm:gap-2">
@@ -147,7 +142,7 @@ export default function Landing() {
               </SignedOutOnly>
             </div>
             <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
-              {["Free trial, no card", "Works on any phone", "Inches or cm"].map((t) => (
+              {["Ready in a minute", "Works on any phone", "Inches or cm"].map((t) => (
                 <li key={t} className="flex items-center gap-1.5">
                   <Check className="h-4 w-4 text-ok" /> {t}
                 </li>
@@ -255,43 +250,6 @@ export default function Landing() {
           <div className="flex items-end justify-center gap-4 rounded-3xl bg-surface-2 px-6 pb-6 pt-10 sm:gap-10">
             <Mannequin figure="female" showAll className="h-64 w-auto sm:h-80" />
             <Mannequin figure="male" active="shoulder" measured={["neck", "chest", "waist", "sleeve_length", "trouser_length"]} className="h-72 w-auto sm:h-[22rem]" />
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- Pricing ---------- */}
-      <section id="pricing" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold text-primary">Pricing</p>
-          <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Try everything first. Pay when you’re sure.</h2>
-        </div>
-        <div className="mx-auto mt-12 grid max-w-4xl gap-4 md:grid-cols-2">
-          <div className="flex flex-col rounded-3xl border border-line bg-surface p-7">
-            <p className="font-display text-xl font-semibold text-ink">Trial</p>
-            <p className="mt-1 text-sm text-muted">Every new workshop starts here.</p>
-            <p className="mt-6 font-display text-4xl font-semibold text-ink">Free</p>
-            <ul className="mt-6 flex flex-col gap-3 text-sm text-ink">
-              {["All features unlocked", "Unlimited clients and orders", "A reminder to upgrade inside the app"].map((t) => (
-                <li key={t} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-ok" /> {t}</li>
-              ))}
-            </ul>
-            <CTA out={start} className="mt-8 inline-flex h-11 items-center justify-center rounded-xl border border-line bg-surface text-sm font-semibold text-ink hover:bg-surface-2" />
-          </div>
-          <div className="relative flex flex-col overflow-hidden rounded-3xl bg-primary p-7 text-white [--primary:#1f4d43]">
-            <div className="tape-strip absolute inset-x-0 top-0 h-2" />
-            <p className="font-display text-xl font-semibold">Full access</p>
-            <p className="mt-1 text-sm text-white/70">For workshops that run on Onepad.</p>
-            <p className="mt-6 font-display text-3xl font-semibold leading-tight">Pay the admin directly</p>
-            <ul className="mt-6 flex flex-col gap-3 text-sm">
-              {["Bank transfer or cash, no card needed", "Approved as soon as payment is confirmed", "No more trial notice"].map((t) => (
-                <li key={t} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#f0c34a]" /> {t}</li>
-              ))}
-            </ul>
-            <CTA
-              out={{ href: "/register", label: "Create your account" }}
-              signedIn={{ href: "/dashboard", label: "Go to dashboard" }}
-              className="mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-[#f0c34a] text-sm font-semibold text-[#241b02] hover:opacity-90"
-            />
           </div>
         </div>
       </section>
