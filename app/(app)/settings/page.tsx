@@ -5,6 +5,7 @@ import { Card, PageHeader } from "@/components/ui";
 import { ThemeSwitch } from "@/components/ThemeToggle";
 import { PasswordForm, ProfileForm } from "@/components/SettingsForms";
 import SubmitButton from "@/components/SubmitButton";
+import LogoUpload from "@/components/LogoUpload";
 
 export const metadata = { title: "Settings" };
 
@@ -22,6 +23,7 @@ export default async function Settings() {
           )
         }
       />
+      <LogoUpload business={tailor.business_name} logoUrl={tailor.logo_url ?? null} />
       <ProfileForm tailor={tailor} />
       <Card className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div>

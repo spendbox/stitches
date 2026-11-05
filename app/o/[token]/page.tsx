@@ -8,6 +8,7 @@ import { date, daysUntil, money, waNumber } from "@/lib/format";
 import { LogoMark } from "@/components/Logo";
 import { cx } from "@/components/ui";
 import type { OrderStatus } from "@/lib/types";
+import BusinessLogo from "@/components/BusinessLogo";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ type Row = {
   deposit: number | null;
   updated_at: string | null;
   clients: { full_name: string } | null;
-  tailors: { business_name: string; phone: string | null; currency: string; status?: string } | null;
+  tailors: { business_name: string; phone: string | null; currency: string; status?: string; logo_url: string | null } | null;
 };
 
 /** One small query; only what the client should see (no notes, no measurements). */
@@ -36,7 +37,13 @@ const getOrder = cache(async (token: string): Promise<Row | null> => {
   return {
     ...row,
     tailors: t
-      ? { business_name: String(t.business_name), phone: (t.phone as string) ?? null, currency: String(t.currency), status: t.status as string | undefined }
+      ? {
+          business_name: String(t.business_name),
+          phone: (t.phone as string) ?? null,
+          currency: String(t.currency),
+          status: t.status as string | undefined,
+          logo_url: (t.logo_url as string) ?? null,
+        }
       : null,
   };
 });
@@ -46,6 +53,8 @@ export async function generateMetadata({ params }: { params: Promise<{ token: st
   return {
     title: { absolute: o ? `${o.title} · ${o.tailors?.business_name}` : "Order not found" },
     description: o ? `Check the progress of your order from ${o.tailors?.business_name}.` : undefined,
+    // WhatsApp shows the tailor's own logo in the link preview when they have one.
+    ...(o?.tailors?.logo_url ? { openGraph: { images: [{ url: o.tailors.logo_url, width: 512, height: 512 }] }, twitter: { card: "summary" } } : {}),
     robots: { index: false, follow: false },
   };
 }
@@ -84,9 +93,7 @@ export default async function ClientOrder({ params }: { params: Promise<{ token:
     <div className="min-h-dvh px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
       <div className="mx-auto flex w-full max-w-md flex-col gap-4">
         <header className="flex items-center gap-3 py-2">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary font-display text-lg font-semibold text-primary-ink">
-            {t.business_name.trim()[0]?.toUpperCase()}
-          </span>
+          <BusinessLogo name={t.business_name} url={t.logo_url} size="lg" />
           <div className="min-w-0">
             <p className="truncate font-display text-lg font-semibold leading-tight">{t.business_name}</p>
             <p className="text-xs text-muted">Order status</p>

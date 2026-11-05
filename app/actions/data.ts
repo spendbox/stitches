@@ -231,3 +231,50 @@ export async function changePassword(_: FormState, form: FormData): Promise<Form
   await db().from("tailors").update({ password_hash: await bcrypt.hash(next, 10) }).eq("id", id);
   return { fields: { saved: "1" } };
 }
+
+/* ---------------- Business logo ---------------- */
+
+const LOGO_TYPES: Record<string, { ext: string; magic: (b: Uint8Array) => boolean }> = {
+  "image/png": { ext: "png", magic: (b) => b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47 },
+  "image/jpeg": { ext: "jpg", magic: (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff },
+  "image/webp": { ext: "webp", magic: (b) => b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50 },
+};
+
+/** Remove every file in this business's logo folder (old versions included). */
+async function clearLogoFolder(tailor_id: string) {
+  const bucket = db().storage.from("logos");
+  const { data } = await bucket.list(tailor_id);
+  if (data?.length) await bucket.remove(data.map((f) => `${tailor_id}/${f.name}`));
+}
+
+export async function uploadLogo(_: FormState, form: FormData): Promise<FormState> {
+  const tailor_id = await requireTailorId();
+  const file = form.get("logo");
+  if (!(file instanceof File) || file.size === 0) return { error: "Choose an image to upload." };
+  if (file.size > 2 * 1024 * 1024) return { error: "That image is too large. Use one under 2 MB." };
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const type = Object.entries(LOGO_TYPES).find(([, t]) => t.magic(bytes));
+  if (!type) return { error: "Use a PNG, JPG or WebP image." };
+  const [contentType, { ext }] = type;
+
+  await clearLogoFolder(tailor_id);
+  // A new file name each time, so phones and WhatsApp don't keep showing the old logo.
+  const path = `${tailor_id}/logo-${Date.now()}.${ext}`;
+  const bucket = db().storage.from("logos");
+  const { error } = await bucket.upload(path, bytes, { contentType, upsert: true, cacheControl: "31536000" });
+  if (error) {
+    return { error: /bucket/i.test(error.message) ? "Logo storage isn't set up yet. Ask your admin to run the latest database setup." : "Could not upload the logo. Please try again." };
+  }
+  const logo_url = bucket.getPublicUrl(path).data.publicUrl;
+  const { error: saveErr } = await db().from("tailors").update({ logo_url }).eq("id", tailor_id);
+  if (saveErr) return { error: "Logo uploaded but not saved. Ask your admin to run the latest database setup." };
+  revalidatePath("/", "layout");
+  return { fields: { saved: "1" } };
+}
+
+export async function removeLogo() {
+  const tailor_id = await requireTailorId();
+  await clearLogoFolder(tailor_id);
+  await db().from("tailors").update({ logo_url: null }).eq("id", tailor_id);
+  revalidatePath("/", "layout");
+}

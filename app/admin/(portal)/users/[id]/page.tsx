@@ -4,12 +4,13 @@ import { db } from "@/lib/supabase";
 import { getPayments, getTailors, totalsByCurrency } from "@/lib/adminData";
 import { date, money } from "@/lib/format";
 import { deletePayment, saveAdminNote } from "@/app/actions/admin";
-import { Avatar, Card, Textarea } from "@/components/ui";
+import { Card, Textarea } from "@/components/ui";
 import BackLink from "@/components/BackLink";
 import ConfirmDelete from "@/components/ConfirmDelete";
 import { AccountBadge, SetupNotice, StatusActions } from "@/components/admin/AdminUI";
 import { PaymentForm } from "@/components/admin/AdminForms";
 import SubmitButton from "@/components/SubmitButton";
+import BusinessLogo from "@/components/BusinessLogo";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,7 @@ export default async function AdminUser({ params }: { params: Promise<{ id: stri
 
       <Card className="p-4 sm:p-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-          <Avatar name={t.business_name} size="lg" />
+          <BusinessLogo name={t.business_name} url={t.logo_url} size="lg" />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="font-display text-2xl font-semibold tracking-tight">{t.business_name}</h1>

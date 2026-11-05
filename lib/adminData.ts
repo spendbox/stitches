@@ -12,6 +12,7 @@ export type AdminTailor = {
   status: AccountStatus;
   approved_at: string | null;
   admin_note: string | null;
+  logo_url: string | null;
   clients: number;
 };
 
@@ -35,6 +36,7 @@ export async function getTailors(): Promise<{ tailors: AdminTailor[]; setupNeede
       status: ((rest.status as AccountStatus) ?? "trial") as AccountStatus,
       approved_at: (rest.approved_at as string) ?? null,
       admin_note: (rest.admin_note as string) ?? null,
+      logo_url: (rest.logo_url as string) ?? null,
       clients: clients?.[0]?.count ?? 0,
     } as AdminTailor;
   });

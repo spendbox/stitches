@@ -7,6 +7,7 @@ import OrderRow from "@/components/OrderRow";
 import Mannequin from "@/components/Mannequin";
 import { money } from "@/lib/format";
 import type { Client, Order } from "@/lib/types";
+import BusinessLogo from "@/components/BusinessLogo";
 
 export const metadata = { title: "Home" };
 
@@ -42,9 +43,12 @@ export default async function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <p className="text-sm text-muted">{greet}, {first}</p>
-        <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight sm:text-3xl">{tailor.business_name}</h1>
+      <div className="flex items-center gap-4">
+        <BusinessLogo name={tailor.business_name} url={tailor.logo_url} size="lg" className="hidden sm:flex" />
+        <div className="min-w-0">
+          <p className="text-sm text-muted">{greet}, {first}</p>
+          <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight sm:text-3xl">{tailor.business_name}</h1>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
