@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import NavProgress from "@/components/NavProgress";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Fonts are bundled with the site (no extra trip to Google) and shown instantly.
@@ -9,8 +10,13 @@ const display = Bricolage_Grotesque({ subsets: ["latin"], weight: ["500", "600",
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["500"], variable: "--f-mono", display: "swap", preload: false });
 
 export const metadata: Metadata = {
-  title: { default: "Stitches", template: "%s · Stitches" },
-  description: "Client measurements, orders and balances for tailors and fashion designers. Works on your phone.",
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  openGraph: { type: "website", siteName: SITE_NAME, url: "/", locale: "en_NG" },
+  twitter: { card: "summary_large_image" },
+  appleWebApp: { title: SITE_NAME, capable: true, statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

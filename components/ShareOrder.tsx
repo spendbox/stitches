@@ -6,6 +6,7 @@ import { resetShareLink } from "@/app/actions/data";
 import PendingButton from "./PendingButton";
 import { Card, cx } from "./ui";
 import { waNumber } from "@/lib/format";
+import { SITE_URL } from "@/lib/site";
 
 /** Lets the tailor send the client a link to follow this order without logging in. */
 export default function ShareOrder({
@@ -31,7 +32,9 @@ export default function ShareOrder({
   const [confirmReset, setConfirmReset] = useState(false);
 
   useEffect(() => {
-    setUrl(`${location.origin}/o/${token}`);
+    // Always share the real address (onepad.site), even from a preview copy of the site.
+    const base = location.hostname === "localhost" ? location.origin : SITE_URL;
+    setUrl(`${base}/o/${token}`);
     setCanShare(typeof navigator.share === "function");
     setConfirmReset(false);
   }, [token]);

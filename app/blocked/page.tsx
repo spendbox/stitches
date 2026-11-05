@@ -25,7 +25,7 @@ export default async function Blocked() {
       </span>
       <h1 className="mt-5 font-display text-2xl font-semibold">This account is blocked</h1>
       <p className="mt-2 max-w-sm text-sm text-muted">
-        Access to <span className="font-semibold text-ink">{data.business_name}</span> has been paused by the Stitches admin. Your records are safe. Contact the admin to restore access.
+        Access to <span className="font-semibold text-ink">{data.business_name}</span> has been paused by the Onepad admin. Your records are safe. Contact the admin to restore access.
       </p>
       <div className="mt-6 flex flex-col gap-2 sm:flex-row">
         {digits && (

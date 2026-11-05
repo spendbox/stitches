@@ -179,7 +179,7 @@ export default async function ClientOrder({ params }: { params: Promise<{ token:
         {o.updated_at && <p className="text-center text-xs text-muted">Last updated {date(o.updated_at, { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</p>}
 
         <Link href="/" className="mx-auto mt-4 flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 text-xs font-medium text-muted hover:text-ink">
-          <LogoMark className="h-5 w-5" /> Tailor? Manage your orders with Stitches
+          <LogoMark className="h-5 w-5" /> Tailor? Manage your orders with Onepad
         </Link>
       </div>
     </div>

@@ -7,7 +7,7 @@ export default function NotFound() {
       <LogoMark className="h-12 w-12" />
       <h1 className="mt-2 font-display text-2xl font-semibold">This link isn’t working</h1>
       <p className="max-w-xs text-sm text-muted">The order may have been removed or your tailor sent a newer link. Ask your tailor for the latest one.</p>
-      <Link href="/" className="mt-2 text-sm font-semibold text-primary">About Stitches</Link>
+      <Link href="/" className="mt-2 text-sm font-semibold text-primary">About Onepad</Link>
     </div>
   );
 }

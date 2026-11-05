@@ -1,4 +1,4 @@
-# Stitches
+# Onepad
 
 Client and measurement records for tailors. Works on phones and computers.
 
@@ -11,7 +11,7 @@ Client and measurement records for tailors. Works on phones and computers.
 - **Trial and full access**: new accounts start in trial mode with everything unlocked and a notice to contact the admin to pay. Once you confirm payment, approve them and the notice disappears.
 - **Admin portal** at `/admin`: see all users, search them, approve, block or unblock, record payments received offline (cash, transfer) and see revenue per month.
 - **Light mode by default**, with a dark mode switch in Settings.
-- **Login**: work email and password only. Stitches handles accounts itself and does not use Supabase Auth.
+- **Login**: work email and password only. Onepad handles accounts itself and does not use Supabase Auth.
 
 Built with Next.js, hosted on **Vercel**, with data stored in **Supabase**.
 
@@ -47,6 +47,11 @@ Built with Next.js, hosted on **Vercel**, with data stored in **Supabase**.
 1. **Database:** in Supabase, open **SQL Editor → New query**, paste everything from [`supabase/schema.sql`](supabase/schema.sql) again and click **Run**. Your data is kept; this only adds user status and the payments list.
 2. **Vercel:** open your project → **Settings → Environment Variables**, add `ADMIN_EMAIL` and `ADMIN_PASSWORD` (and optionally `SUPPORT_PHONE`), then go to **Deployments** and click **Redeploy**.
 
+### Connect onepad.site
+1. In Vercel, open your project → **Settings → Domains**, type `onepad.site` and click **Add**. Add `www.onepad.site` too and let Vercel redirect it to `onepad.site`.
+2. Vercel shows one or two DNS records. At the company where you bought the domain, open its **DNS settings** and add exactly those records. It usually starts working within an hour.
+3. Optional: if the site ever moves to another address, set `NEXT_PUBLIC_SITE_URL` in Vercel to the new address and redeploy. Client status links, link previews and search engines all use it.
+
 ### Make it load fast (one-time, 1 minute)
 Vercel should run the app in the same part of the world as your database. Otherwise every page waits on a long round trip.
 1. In Supabase, open **Project Settings → General** and note the **Region** (for example *West EU (London)* or *East US*).
@@ -60,7 +65,7 @@ Vercel should run the app in the same part of the world as your database. Otherw
 ### Security
 - Passwords are stored hashed with bcrypt and never saved as plain text.
 - Logins use a signed, http-only cookie that lasts 30 days.
-- Every database table has Row Level Security turned on with no public access. Only the Stitches server can read your data, and every request is limited to the logged-in tailor's own records.
+- Every database table has Row Level Security turned on with no public access. Only the Onepad server can read your data, and every request is limited to the logged-in tailor's own records.
 
 ## Running on your own computer (optional)
 ```bash

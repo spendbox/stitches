@@ -17,7 +17,9 @@ import Mannequin from "@/components/Mannequin";
 import { ThemeButton } from "@/components/ThemeToggle";
 
 export const metadata = {
-  title: { absolute: "Stitches · Measurements and orders for tailors" },
+  title: { absolute: "Onepad · Measurements and orders for tailors" },
+  alternates: { canonical: "/" },
+  openGraph: { title: "Onepad · Measurements and orders for tailors", url: "/" },
 };
 
 const features = [
@@ -39,7 +41,7 @@ const features = [
   {
     icon: Wallet,
     title: "Know who still owes you",
-    text: "Record the price and the deposit. Stitches adds up the balance to collect across all your open orders.",
+    text: "Record the price and the deposit. Onepad adds up the balance to collect across all your open orders.",
   },
   {
     icon: Copy,
@@ -62,7 +64,7 @@ const steps = [
 const faqs = [
   {
     q: "Do I need to install anything?",
-    a: "No. Stitches runs in your phone’s browser. You can add it to your home screen so it opens like an app.",
+    a: "No. Onepad runs in your phone’s browser. You can add it to your home screen so it opens like an app.",
   },
   {
     q: "How does payment work?",
@@ -90,7 +92,7 @@ export default function Landing() {
       {/* ---------- Header ---------- */}
       <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 pt-[env(safe-area-inset-top)] backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
-          <Link href="/" aria-label="Stitches home">
+          <Link href="/" aria-label="Onepad home">
             <Logo />
           </Link>
           <nav className="ml-6 hidden items-center gap-6 text-sm font-medium text-muted md:flex">
@@ -127,7 +129,7 @@ export default function Landing() {
               Every client’s measurements, <span className="relative whitespace-nowrap text-primary">ready when<svg viewBox="0 0 200 12" preserveAspectRatio="none" className="absolute -bottom-1.5 left-0 h-2.5 w-full" aria-hidden="true"><path d="M2 8 Q50 2 100 6 T198 5" fill="none" stroke="var(--tape)" strokeWidth="4" strokeLinecap="round" /></svg></span> they walk in.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-              Stitches keeps neck-to-hem measurements for every client, tracks the garments you’re sewing, and shows how much is still owed. Right on your phone.
+              Onepad keeps neck-to-hem measurements for every client, tracks the garments you’re sewing, and shows how much is still owed. Right on your phone.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <CTA
@@ -278,7 +280,7 @@ export default function Landing() {
           <div className="relative flex flex-col overflow-hidden rounded-3xl bg-primary p-7 text-white [--primary:#1f4d43]">
             <div className="tape-strip absolute inset-x-0 top-0 h-2" />
             <p className="font-display text-xl font-semibold">Full access</p>
-            <p className="mt-1 text-sm text-white/70">For workshops that run on Stitches.</p>
+            <p className="mt-1 text-sm text-white/70">For workshops that run on Onepad.</p>
             <p className="mt-6 font-display text-3xl font-semibold leading-tight">Pay the admin directly</p>
             <ul className="mt-6 flex flex-col gap-3 text-sm">
               {["Bank transfer or cash, no card needed", "Approved as soon as payment is confirmed", "No more trial notice"].map((t) => (
@@ -336,7 +338,7 @@ export default function Landing() {
       <footer className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] text-sm text-muted sm:flex-row sm:px-6">
         <Logo />
         <p className="flex items-center gap-1.5"><Lock className="h-3.5 w-3.5" /> Your client records stay private to your account.</p>
-        <p>© {new Date().getFullYear()} Stitches</p>
+        <p>© {new Date().getFullYear()} Onepad</p>
       </footer>
     </div>
   );
