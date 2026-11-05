@@ -46,7 +46,7 @@ export async function login(_: FormState, form: FormData): Promise<FormState> {
   const ok = data ? await bcrypt.compare(password, data.password_hash) : false;
   if (!data || !ok) return { error: "That email and password don't match. Check them and try again.", fields };
   if (data.status === "blocked") {
-    return { error: "This account has been blocked. Please contact the Stitches admin.", fields };
+    return { error: "This account has been blocked. Please contact the Onepad admin.", fields };
   }
 
   await createSession(data.id);

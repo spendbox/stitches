@@ -60,7 +60,7 @@ export function LoginForm() {
       </Field>
       <SubmitButton className="mt-1 h-12" pendingText="Logging in…">Log in</SubmitButton>
       <p className="text-center text-sm text-muted">
-        New to Stitches?{" "}
+        New to Onepad?{" "}
         <Link href="/register" className="font-semibold text-primary hover:underline">
           Create an account
         </Link>

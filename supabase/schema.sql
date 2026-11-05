@@ -1,5 +1,5 @@
 -- =========================================================
--- STITCHES · database setup
+-- ONEPAD · database setup
 -- Paste all of this into Supabase → SQL Editor → New query → Run.
 -- Safe to run more than once.
 -- =========================================================
@@ -128,7 +128,7 @@ create trigger orders_updated_at before update on public.orders
 
 -- ---------- Lock the tables ----------
 -- Row Level Security is ON with no policies, so the public "anon" key can read nothing.
--- The Stitches server uses the private service-role key and checks the logged-in tailor itself.
+-- The Onepad server uses the private service-role key and checks the logged-in tailor itself.
 alter table public.tailors      enable row level security;
 alter table public.clients      enable row level security;
 alter table public.measurements enable row level security;

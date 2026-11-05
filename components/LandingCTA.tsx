@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 
-/** True when this browser has a Stitches login (read from a non-secret hint cookie). */
+/** True when this browser has a Onepad login (read from a non-secret hint cookie). */
 function useSignedIn() {
   const [inn, setIn] = useState(false);
   useEffect(() => setIn(/(?:^|;\s*)stitches_in=1/.test(document.cookie)), []);
