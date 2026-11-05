@@ -3,23 +3,26 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "Stitches", template: "%s · Stitches" },
-  description: "Client and measurement records for tailors.",
+  description: "Client measurements, orders and balances for tailors and fashion designers. Works on your phone.",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4f6f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d1412" },
-  ],
+  themeColor: "#f4f6f3",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Light by default; apply dark before paint only if the user chose it. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("stitches-theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}`,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}

@@ -9,7 +9,7 @@ export const metadata = { title: "New order" };
 export default async function NewOrder({ searchParams }: { searchParams: Promise<{ client?: string }> }) {
   const tailor = await requireTailor();
   const { client } = await searchParams;
-  const { data } = await db().from("clients").select("id, full_name").eq("tailor_id", tailor.id).order("full_name");
+  const { data } = await db().from("clients").select("id, full_name, phone").eq("tailor_id", tailor.id).order("full_name");
   const clients = data ?? [];
   const back = client ? `/clients/${client}` : "/orders";
   return (

@@ -1,5 +1,6 @@
 import { requireTailor } from "@/lib/session";
 import { MobileBar, MobileTop, Sidebar } from "@/components/Nav";
+import TrialBanner from "@/components/TrialBanner";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const tailor = await requireTailor();
@@ -8,7 +9,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <Sidebar business={tailor.business_name} name={tailor.full_name} />
       <div className="min-w-0 flex-1">
         <MobileTop />
-        <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-12 lg:pt-10">{children}</main>
+        <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-12 lg:pt-10">
+          {tailor.status !== "active" && <TrialBanner business={tailor.business_name} />}
+          {children}
+        </main>
       </div>
       <MobileBar />
     </div>

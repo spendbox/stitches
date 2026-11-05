@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { LayoutGrid, Users, Scissors, Settings, Plus, LogOut } from "lucide-react";
 import { Logo } from "./Logo";
 import { cx } from "./ui";
+import { ThemeButton } from "./ThemeToggle";
 import { logout } from "@/app/actions/auth";
 
 const items = [
@@ -46,8 +47,13 @@ export function Sidebar({ business, name }: { business: string; name: string }) 
         })}
       </nav>
       <div className="mt-auto rounded-2xl bg-surface-2 p-3">
-        <p className="truncate text-sm font-semibold text-ink">{business}</p>
-        <p className="truncate text-xs text-muted">{name}</p>
+        <div className="flex items-start gap-2">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-ink">{business}</p>
+            <p className="truncate text-xs text-muted">{name}</p>
+          </div>
+          <ThemeButton className="-mr-1 -mt-1 h-8 w-8" />
+        </div>
         <form action={logout}>
           <button className="mt-3 flex items-center gap-2 text-xs font-semibold text-muted hover:text-ink">
             <LogOut className="h-3.5 w-3.5" /> Log out
@@ -72,7 +78,7 @@ export function MobileBar() {
     );
   };
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
+    <nav className="kb-hide fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
       <div className="mx-auto flex max-w-lg items-end px-2">
         {left.map(tab)}
         <Link
@@ -94,6 +100,7 @@ export function MobileTop() {
       <Link href="/dashboard">
         <Logo />
       </Link>
+      <ThemeButton className="-mr-2" />
     </header>
   );
 }

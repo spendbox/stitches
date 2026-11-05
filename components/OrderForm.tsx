@@ -1,6 +1,9 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
+import { UserPlus } from "lucide-react";
+import Combobox from "./Combobox";
 import { saveOrder } from "@/app/actions/data";
 import type { Order } from "@/lib/types";
 import { STATUS_LABEL } from "@/lib/types";
@@ -15,7 +18,7 @@ export default function OrderForm({
   returnTo,
 }: {
   order?: Order;
-  clients: { id: string; full_name: string }[];
+  clients: { id: string; full_name: string; phone?: string | null }[];
   clientId?: string;
   currency: string;
   returnTo: string;
@@ -28,16 +31,20 @@ export default function OrderForm({
         <input type="hidden" name="return_to" value={returnTo} />
         <FormError error={state?.error} />
         <Field label="Client" htmlFor="client_id">
-          <Select id="client_id" name="client_id" required defaultValue={order?.client_id ?? clientId ?? ""}>
-            <option value="" disabled>
-              Choose a client
-            </option>
-            {clients.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.full_name}
-              </option>
-            ))}
-          </Select>
+          <Combobox
+            id="client_id"
+            name="client_id"
+            required
+            defaultValue={order?.client_id ?? clientId ?? ""}
+            placeholder="Search clients by name or phone"
+            emptyText="No client with that name."
+            options={clients.map((c) => ({ id: c.id, label: c.full_name, sub: c.phone }))}
+            footer={
+              <Link href="/clients/new" className="flex items-center gap-2 px-3.5 py-3 text-sm font-semibold text-primary hover:bg-surface-2">
+                <UserPlus className="h-4 w-4" /> Add a new client
+              </Link>
+            }
+          />
         </Field>
         <Field label="Garment" htmlFor="title">
           <Input id="title" name="title" required defaultValue={order?.title} placeholder="Two-piece senator suit" />
