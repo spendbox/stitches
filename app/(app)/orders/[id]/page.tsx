@@ -18,7 +18,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
   const tailor = await requireTailor();
   const [{ data }, { data: clients }] = await Promise.all([
     db().from("orders").select("*, clients(full_name)").eq("id", id).eq("tailor_id", tailor.id).maybeSingle(),
-    db().from("clients").select("id, full_name").eq("tailor_id", tailor.id).order("full_name"),
+    db().from("clients").select("id, full_name, phone").eq("tailor_id", tailor.id).order("full_name"),
   ]);
   if (!data) notFound();
   const order = data as Order;

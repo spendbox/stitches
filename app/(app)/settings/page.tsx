@@ -1,7 +1,8 @@
 import { LogOut } from "lucide-react";
 import { requireTailor } from "@/lib/session";
 import { logout } from "@/app/actions/auth";
-import { Button, PageHeader } from "@/components/ui";
+import { Button, Card, PageHeader } from "@/components/ui";
+import { ThemeSwitch } from "@/components/ThemeToggle";
 import { PasswordForm, ProfileForm } from "@/components/SettingsForms";
 
 export const metadata = { title: "Settings" };
@@ -10,8 +11,24 @@ export default async function Settings() {
   const tailor = await requireTailor();
   return (
     <div className="flex max-w-3xl flex-col gap-6">
-      <PageHeader title="Settings" />
+      <PageHeader
+        title="Settings"
+        subtitle={
+          tailor.status === "active" ? (
+            <span className="font-medium text-ok">Full access · thank you for paying</span>
+          ) : (
+            <span className="font-medium text-warn">Trial mode · contact the admin to pay for full access</span>
+          )
+        }
+      />
       <ProfileForm tailor={tailor} />
+      <Card className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div>
+          <h2 className="font-display text-lg font-semibold">Appearance</h2>
+          <p className="mt-1 text-sm text-muted">Saved on this device.</p>
+        </div>
+        <ThemeSwitch />
+      </Card>
       <PasswordForm />
       <form action={logout}>
         <Button variant="secondary" className="w-full sm:w-auto">

@@ -7,6 +7,22 @@ export type Tailor = {
   unit: "in" | "cm";
   currency: string;
   created_at: string;
+  /** Missing until the latest schema.sql has been run; treat as "trial". */
+  status?: AccountStatus;
+};
+
+export type AccountStatus = "trial" | "active" | "blocked";
+
+export type Payment = {
+  id: string;
+  tailor_id: string | null;
+  payer: string;
+  amount: number;
+  currency: string;
+  method: string | null;
+  note: string | null;
+  paid_at: string;
+  created_at: string;
 };
 
 export type Client = {

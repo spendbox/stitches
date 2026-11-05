@@ -47,22 +47,25 @@ export async function getTailorId(): Promise<string | null> {
   }
 }
 
-/** Returns the logged-in tailor or sends the visitor to /login. */
+/** Returns the logged-in tailor or sends the visitor to /login (or /blocked). */
 export const requireTailor = cache(async (): Promise<Tailor> => {
   const id = await getTailorId();
   if (!id) redirect("/login");
-  const { data } = await db()
-    .from("tailors")
-    .select("id, business_name, full_name, email, phone, unit, currency, created_at")
-    .eq("id", id)
-    .maybeSingle();
+  // "*" so the app keeps working even before the newest columns (status) exist.
+  const { data } = await db().from("tailors").select("*").eq("id", id).maybeSingle();
   if (!data) redirect("/login");
-  return data as Tailor;
+  const { password_hash: _omit, ...tailor } = data as Tailor & { password_hash?: string };
+  void _omit;
+  if (tailor.status === "blocked") redirect("/blocked");
+  return tailor as Tailor;
 });
 
-/** For server actions: the tailor id, or redirect to login. */
+/** For server actions: the tailor id, or redirect to login. Blocked accounts are stopped here too. */
 export async function requireTailorId(): Promise<string> {
   const id = await getTailorId();
   if (!id) redirect("/login");
+  const { data, error } = await db().from("tailors").select("*").eq("id", id).maybeSingle();
+  if (!error && !data) redirect("/login");
+  if ((data as { status?: string } | null)?.status === "blocked") redirect("/blocked");
   return id;
 }

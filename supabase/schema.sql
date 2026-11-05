@@ -70,6 +70,34 @@ create table if not exists public.orders (
 create index if not exists orders_tailor_status_idx on public.orders (tailor_id, status, due_date);
 create index if not exists orders_client_idx on public.orders (client_id);
 
+-- ---------- Account access (set by the admin at /admin) ----------
+-- trial   = new sign-up, can use the app and sees a "pay for full access" notice
+-- active  = paid and approved by the admin
+-- blocked = cannot log in
+alter table public.tailors add column if not exists status text not null default 'trial';
+alter table public.tailors add column if not exists approved_at timestamptz;
+alter table public.tailors add column if not exists admin_note text;
+do $$ begin
+  if not exists (select 1 from pg_constraint where conname = 'tailors_status_check') then
+    alter table public.tailors add constraint tailors_status_check check (status in ('trial', 'active', 'blocked'));
+  end if;
+end $$;
+
+-- ---------- Payments received from tailors (recorded by the admin) ----------
+create table if not exists public.payments (
+  id          uuid primary key default gen_random_uuid(),
+  tailor_id   uuid references public.tailors(id) on delete set null,
+  payer       text not null,                       -- business name at the time of payment
+  amount      numeric(12, 2) not null check (amount >= 0),
+  currency    text not null default 'NGN',
+  method      text,                                -- e.g. Bank transfer, Cash
+  note        text,
+  paid_at     date not null default current_date,
+  created_at  timestamptz not null default now()
+);
+create index if not exists payments_paid_at_idx on public.payments (paid_at desc);
+create index if not exists payments_tailor_idx on public.payments (tailor_id);
+
 -- ---------- Keep updated_at fresh ----------
 create or replace function public.set_updated_at()
 returns trigger language plpgsql as $$
@@ -97,5 +125,6 @@ alter table public.tailors      enable row level security;
 alter table public.clients      enable row level security;
 alter table public.measurements enable row level security;
 alter table public.orders       enable row level security;
+alter table public.payments     enable row level security;
 
-revoke all on public.tailors, public.clients, public.measurements, public.orders from anon, authenticated;
+revoke all on public.tailors, public.clients, public.measurements, public.orders, public.payments from anon, authenticated;

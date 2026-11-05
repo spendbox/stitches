@@ -31,36 +31,35 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1412;
-    --surface: #141d1a;
-    --surface-2: #1b2622;
-    --ink: #e6eeea;
-    --muted: #93a39c;
-    --line: #26332e;
-    --primary: #6cc0a8;
-    --primary-ink: #0b1714;
-    --primary-soft: #1a2f29;
-    --tape: #f0c34a;
-    --tape-ink: #241b02;
-    --tape-soft: #3a3014;
-    --danger: #ef7d72;
-    --danger-soft: #3a1c19;
-    --ok: #6fcf97;
-    --ok-soft: #173325;
-    --warn: #f0c34a;
-    --warn-soft: #3a3014;
-    --info: #8ab8e8;
-    --info-soft: #182a3c;
+/* Light is the default. Dark only when the user turns it on (Settings or the moon button). */
+:root[data-theme="dark"] {
+  --bg: #0d1412;
+  --surface: #141d1a;
+  --surface-2: #1b2622;
+  --ink: #e6eeea;
+  --muted: #93a39c;
+  --line: #26332e;
+  --primary: #6cc0a8;
+  --primary-ink: #0b1714;
+  --primary-soft: #1a2f29;
+  --tape: #f0c34a;
+  --tape-ink: #241b02;
+  --tape-soft: #3a3014;
+  --danger: #ef7d72;
+  --danger-soft: #3a1c19;
+  --ok: #6fcf97;
+  --ok-soft: #173325;
+  --warn: #f0c34a;
+  --warn-soft: #3a3014;
+  --info: #8ab8e8;
+  --info-soft: #182a3c;
 
-    --mq-fill: #2a3632;
-    --mq-shade: #18211e;
-    --mq-stroke: #5d6e67;
-    --mq-seam: #44544e;
-    --mq-guide: #6cc0a8;
-    color-scheme: dark;
-  }
+  --mq-fill: #2a3632;
+  --mq-shade: #18211e;
+  --mq-stroke: #5d6e67;
+  --mq-seam: #44544e;
+  --mq-guide: #6cc0a8;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -89,6 +88,9 @@
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
+html {
+  scroll-padding-top: 5rem;
+}
 html,
 body {
   background: var(--bg);
@@ -188,4 +190,47 @@ h3 {
   background-size: 10px 1px;
   background-repeat: repeat-x;
   height: 1px;
+}
+
+/* Phones: hide the bottom tab bar and floating buttons while the keyboard is up,
+   so the form and mannequin get the room. */
+@media (max-width: 1023px) {
+  body:has(:is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), textarea):focus) .kb-hide {
+    display: none;
+  }
+}
+
+/* Smooth zoom for the mannequin guide */
+.mq-zoom {
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform-origin: 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mq-zoom {
+    transition: none;
+  }
+}
+
+/* Landing page */
+.grain {
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
 }

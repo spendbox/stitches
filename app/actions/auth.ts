@@ -42,9 +42,12 @@ export async function login(_: FormState, form: FormData): Promise<FormState> {
   const fields = { email };
   if (!email || !password) return { error: "Enter your work email and password.", fields };
 
-  const { data } = await db().from("tailors").select("id, password_hash").eq("email", email).maybeSingle();
+  const { data } = await db().from("tailors").select("*").eq("email", email).maybeSingle();
   const ok = data ? await bcrypt.compare(password, data.password_hash) : false;
   if (!data || !ok) return { error: "That email and password don't match. Check them and try again.", fields };
+  if (data.status === "blocked") {
+    return { error: "This account has been blocked. Please contact the Stitches admin.", fields };
+  }
 
   await createSession(data.id);
   redirect("/dashboard");
@@ -52,5 +55,5 @@ export async function login(_: FormState, form: FormData): Promise<FormState> {
 
 export async function logout() {
   await destroySession();
-  redirect("/login");
+  redirect("/");
 }
