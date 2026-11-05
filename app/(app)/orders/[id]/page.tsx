@@ -6,9 +6,11 @@ import { Card, PageHeader, StatusPill, cx } from "@/components/ui";
 import BackLink from "@/components/BackLink";
 import OrderForm from "@/components/OrderForm";
 import ConfirmDelete from "@/components/ConfirmDelete";
+import ShareOrder from "@/components/ShareOrder";
 import { deleteOrder, setOrderStatus } from "@/app/actions/data";
 import { money } from "@/lib/format";
 import { STATUS_LABEL, type Order, type OrderStatus } from "@/lib/types";
+import PendingButton from "@/components/PendingButton";
 
 export const metadata = { title: "Order" };
 
@@ -17,7 +19,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const tailor = await requireTailor();
   const [{ data }, { data: clients }] = await Promise.all([
-    db().from("orders").select("*, clients(full_name)").eq("id", id).eq("tailor_id", tailor.id).maybeSingle(),
+    db().from("orders").select("*, clients(full_name, phone)").eq("id", id).eq("tailor_id", tailor.id).maybeSingle(),
     db().from("clients").select("id, full_name, phone").eq("tailor_id", tailor.id).order("full_name"),
   ]);
   if (!data) notFound();
@@ -46,14 +48,15 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
               <input type="hidden" name="id" value={order.id} />
               <input type="hidden" name="client_id" value={order.client_id} />
               <input type="hidden" name="status" value={st} />
-              <button
+              <PendingButton
+                pendingText="Saving"
                 className={cx(
-                  "h-11 w-full rounded-xl border text-sm font-semibold transition",
+                  "inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border text-sm font-semibold transition",
                   order.status === st ? "border-primary bg-primary text-primary-ink" : "border-line hover:bg-surface-2"
                 )}
               >
                 {STATUS_LABEL[st]}
-              </button>
+              </PendingButton>
             </form>
           ))}
         </div>
@@ -65,6 +68,22 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
           </div>
         )}
       </Card>
+
+      {order.share_token ? (
+        <ShareOrder
+          orderId={order.id}
+          token={order.share_token}
+          clientName={order.clients?.full_name ?? "your client"}
+          clientPhone={order.clients?.phone ?? null}
+          garment={order.title}
+          business={tailor.business_name}
+          currency={tailor.currency}
+        />
+      ) : (
+        <p className="mb-5 rounded-xl bg-info-soft px-3.5 py-2.5 text-sm text-info">
+          Client status links need a one-time database update. Ask your admin to run the latest database setup.
+        </p>
+      )}
 
       <OrderForm order={order} clients={clients ?? []} currency={tailor.currency} returnTo={`/orders/${order.id}`} />
       <div className="mt-6">

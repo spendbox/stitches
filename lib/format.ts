@@ -34,3 +34,22 @@ export function str(v: FormDataEntryValue | null) {
   const s = typeof v === "string" ? v.trim() : "";
   return s.length ? s : null;
 }
+
+const DIAL: Record<string, string> = { NGN: "234", GHS: "233", KES: "254", ZAR: "27", GBP: "44", INR: "91", AED: "971", USD: "1", CAD: "1" };
+
+/**
+ * Turn a phone number into the digits WhatsApp links need (country code first).
+ * "+234 803…" stays as is; a local "0803…" uses the country of the tailor's currency.
+ * Returns "" when unsure, which lets WhatsApp ask who to send to.
+ */
+export function waNumber(phone: string | null | undefined, currency?: string) {
+  if (!phone) return "";
+  const p = phone.trim();
+  const digits = p.replace(/[^\d]/g, "");
+  if (p.startsWith("+")) return digits;
+  if (p.startsWith("00")) return digits.slice(2);
+  const cc = currency ? DIAL[currency] : undefined;
+  if (cc && digits.startsWith("0") && digits.length >= 9) return cc + digits.slice(1);
+  if (cc && digits.startsWith(cc) && digits.length > 10) return digits;
+  return "";
+}

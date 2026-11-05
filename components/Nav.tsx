@@ -7,6 +7,7 @@ import { Logo } from "./Logo";
 import { cx } from "./ui";
 import { ThemeButton } from "./ThemeToggle";
 import { logout } from "@/app/actions/auth";
+import PendingButton from "./PendingButton";
 
 const items = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
@@ -55,9 +56,9 @@ export function Sidebar({ business, name }: { business: string; name: string }) 
           <ThemeButton className="-mr-1 -mt-1 h-8 w-8" />
         </div>
         <form action={logout}>
-          <button className="mt-3 flex items-center gap-2 text-xs font-semibold text-muted hover:text-ink">
+          <PendingButton pendingText="Logging out…" className="mt-3 flex items-center gap-2 text-xs font-semibold text-muted hover:text-ink">
             <LogOut className="h-3.5 w-3.5" /> Log out
-          </button>
+          </PendingButton>
         </form>
       </div>
     </aside>

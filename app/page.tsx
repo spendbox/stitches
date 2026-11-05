@@ -11,7 +11,7 @@ import {
   Smartphone,
   Wallet,
 } from "lucide-react";
-import { getTailorId } from "@/lib/session";
+import { CTA, SignedOutOnly } from "@/components/LandingCTA";
 import { Logo } from "@/components/Logo";
 import Mannequin from "@/components/Mannequin";
 import { ThemeButton } from "@/components/ThemeToggle";
@@ -78,9 +78,12 @@ const faqs = [
   },
 ];
 
-export default async function Landing() {
-  const loggedIn = Boolean(await getTailorId());
-  const primary = loggedIn ? { href: "/dashboard", label: "Open your workshop" } : { href: "/register", label: "Start free trial" };
+// Pre-built at deploy time and served from the edge, so it opens instantly.
+export const dynamic = "force-static";
+
+const start = { href: "/register", label: "Start free trial" };
+
+export default function Landing() {
 
   return (
     <div className="min-h-dvh overflow-x-clip">
@@ -98,17 +101,16 @@ export default async function Landing() {
           </nav>
           <div className="ml-auto flex items-center gap-1 sm:gap-2">
             <ThemeButton />
-            {!loggedIn && (
+            <SignedOutOnly>
               <Link href="/login" className="hidden h-10 items-center rounded-xl px-3 text-sm font-semibold text-ink hover:bg-surface-2 sm:flex">
                 Log in
               </Link>
-            )}
-            <Link
-              href={primary.href}
+            </SignedOutOnly>
+            <CTA
+              out={{ href: "/register", label: "Get started" }}
+              signedIn={{ href: "/dashboard", label: "Dashboard" }}
               className="flex h-10 items-center gap-1.5 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-ink hover:opacity-90"
-            >
-              {loggedIn ? "Dashboard" : "Get started"}
-            </Link>
+            />
           </div>
         </div>
       </header>
@@ -128,20 +130,19 @@ export default async function Landing() {
               Stitches keeps neck-to-hem measurements for every client, tracks the garments you’re sewing, and shows how much is still owed. Right on your phone.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href={primary.href}
+              <CTA
+                out={start}
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-[15px] font-semibold text-primary-ink shadow-lg shadow-primary/20 hover:opacity-90"
-              >
-                {primary.label} <ArrowRight className="h-4 w-4" />
-              </Link>
-              {!loggedIn && (
+                after={<ArrowRight className="h-4 w-4" />}
+              />
+              <SignedOutOnly>
                 <Link
                   href="/login"
                   className="inline-flex h-12 items-center justify-center rounded-xl border border-line bg-surface px-6 text-[15px] font-semibold text-ink hover:bg-surface-2"
                 >
                   I have an account
                 </Link>
-              )}
+              </SignedOutOnly>
             </div>
             <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
               {["Free trial, no card", "Works on any phone", "Inches or cm"].map((t) => (
@@ -272,9 +273,7 @@ export default async function Landing() {
                 <li key={t} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-ok" /> {t}</li>
               ))}
             </ul>
-            <Link href={primary.href} className="mt-8 inline-flex h-11 items-center justify-center rounded-xl border border-line bg-surface text-sm font-semibold text-ink hover:bg-surface-2">
-              {loggedIn ? "Open your workshop" : "Start free trial"}
-            </Link>
+            <CTA out={start} className="mt-8 inline-flex h-11 items-center justify-center rounded-xl border border-line bg-surface text-sm font-semibold text-ink hover:bg-surface-2" />
           </div>
           <div className="relative flex flex-col overflow-hidden rounded-3xl bg-primary p-7 text-white [--primary:#1f4d43]">
             <div className="tape-strip absolute inset-x-0 top-0 h-2" />
@@ -286,9 +285,11 @@ export default async function Landing() {
                 <li key={t} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#f0c34a]" /> {t}</li>
               ))}
             </ul>
-            <Link href={primary.href} className="mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-[#f0c34a] text-sm font-semibold text-[#241b02] hover:opacity-90">
-              {loggedIn ? "Go to dashboard" : "Create your account"}
-            </Link>
+            <CTA
+              out={{ href: "/register", label: "Create your account" }}
+              signedIn={{ href: "/dashboard", label: "Go to dashboard" }}
+              className="mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-[#f0c34a] text-sm font-semibold text-[#241b02] hover:opacity-90"
+            />
           </div>
         </div>
       </section>
@@ -317,12 +318,11 @@ export default async function Landing() {
           <div className="flex-1">
             <h2 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">Your next client is on the way.</h2>
             <p className="mt-3 text-white/75">Have their measurements ready before they reach the door.</p>
-            <Link
-              href={primary.href}
+            <CTA
+              out={start}
               className="mt-8 inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#f0c34a] px-6 text-[15px] font-semibold text-[#241b02] hover:opacity-90"
-            >
-              {primary.label} <ArrowRight className="h-4 w-4" />
-            </Link>
+              after={<ArrowRight className="h-4 w-4" />}
+            />
           </div>
           <div className="pointer-events-none flex items-end gap-4 [--mq-fill:#2b5c51] [--mq-shade:#173a32] [--mq-stroke:#4f8073] [--mq-seam:#3d6f62] [--mq-guide:#f0c34a] [--tape:#f0c34a] [--surface:#1f4d43]">
             <Mannequin figure="female" active="hips" measured={["neck", "chest", "waist"]} className="h-48 w-auto sm:h-56" />

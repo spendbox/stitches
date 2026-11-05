@@ -6,6 +6,7 @@ import { db } from "./supabase";
 import type { Tailor } from "./types";
 
 const COOKIE = "stitches_session";
+const HINT = "stitches_in";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 function secret() {
@@ -28,11 +29,15 @@ export async function createSession(tailorId: string) {
     path: "/",
     maxAge: MAX_AGE,
   });
+  // Harmless hint (no secret in it) so pre-built pages like the landing page can
+  // show "Dashboard" instead of "Log in" without a slow server check.
+  jar.set(HINT, "1", { secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: MAX_AGE });
 }
 
 export async function destroySession() {
   const jar = await cookies();
   jar.delete(COOKIE);
+  jar.delete(HINT);
 }
 
 export async function getTailorId(): Promise<string | null> {

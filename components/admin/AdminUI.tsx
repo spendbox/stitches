@@ -3,6 +3,7 @@ import { setTailorStatus } from "@/app/actions/admin";
 import { money } from "@/lib/format";
 import type { AccountStatus } from "@/lib/types";
 import { cx } from "../ui";
+import PendingButton from "../PendingButton";
 
 const meta: Record<AccountStatus, { label: string; cls: string; Icon: typeof Clock }> = {
   trial: { label: "Trial", cls: "bg-tape-soft text-warn", Icon: Clock },
@@ -29,7 +30,7 @@ export function StatusActions({ id, status, compact }: { id: string; status: Acc
     <form action={setTailorStatus}>
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="status" value={to} />
-      <button className={cx(btn, cls)}>{children}</button>
+      <PendingButton pendingText="Saving…" className={cx(btn, cls)}>{children}</PendingButton>
     </form>
   );
   return (

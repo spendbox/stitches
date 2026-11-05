@@ -62,7 +62,10 @@ export type Order = {
   deposit: number | null;
   notes: string | null;
   created_at: string;
-  clients?: { full_name: string } | null;
+  updated_at?: string;
+  /** Code for the client's status link (/o/<code>). Missing until the latest schema.sql is run. */
+  share_token?: string | null;
+  clients?: { full_name: string; phone?: string | null } | null;
 };
 
 export const STATUS_LABEL: Record<OrderStatus, string> = {

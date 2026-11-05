@@ -5,6 +5,7 @@ import { db } from "@/lib/supabase";
 import { adminContact } from "@/lib/admin";
 import { logout } from "@/app/actions/auth";
 import { Logo } from "@/components/Logo";
+import PendingButton from "@/components/PendingButton";
 
 export const metadata = { title: "Account blocked" };
 
@@ -38,9 +39,9 @@ export default async function Blocked() {
           </a>
         )}
         <form action={logout}>
-          <button className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold text-muted hover:bg-surface-2">
+          <PendingButton pendingText="Logging out…" className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold text-muted hover:bg-surface-2">
             <LogOut className="h-4 w-4" /> Log out
-          </button>
+          </PendingButton>
         </form>
       </div>
     </div>

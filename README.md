@@ -5,6 +5,8 @@ Client and measurement records for tailors. Works on phones and computers.
 - **Clients**: name, phone, email, address, style notes
 - **Measurements**: female and male mannequin guides. As you type each measurement, the yellow tape shows where it goes on the body. Keep several sets per client (for example "Standard" and "Wedding gown"), add your own extra measurements, and copy a set to paste into WhatsApp.
 - **Orders**: garment, due date, price, deposit and balance, plus a status (Not started → Sewing → Ready → Delivered)
+- **Client status links**: on any order, tap **Send on WhatsApp** to send the client a private link. They see the status (Booked → Sewing → Ready → Delivered), due date and balance, and can call or WhatsApp you. No login needed. **Make a new link** cancels the old one.
+- **Fast**: the landing page is pre-built, fonts are bundled with the site, pages show a loading placeholder straight away, and every button shows a spinner while it works.
 - **Landing page** at the home address, with sign-up and log-in buttons.
 - **Trial and full access**: new accounts start in trial mode with everything unlocked and a notice to contact the admin to pay. Once you confirm payment, approve them and the notice disappears.
 - **Admin portal** at `/admin`: see all users, search them, approve, block or unblock, record payments received offline (cash, transfer) and see revenue per month.
@@ -44,6 +46,11 @@ Built with Next.js, hosted on **Vercel**, with data stored in **Supabase**.
 ### Already deployed before? Two quick updates
 1. **Database:** in Supabase, open **SQL Editor → New query**, paste everything from [`supabase/schema.sql`](supabase/schema.sql) again and click **Run**. Your data is kept; this only adds user status and the payments list.
 2. **Vercel:** open your project → **Settings → Environment Variables**, add `ADMIN_EMAIL` and `ADMIN_PASSWORD` (and optionally `SUPPORT_PHONE`), then go to **Deployments** and click **Redeploy**.
+
+### Make it load fast (one-time, 1 minute)
+Vercel should run the app in the same part of the world as your database. Otherwise every page waits on a long round trip.
+1. In Supabase, open **Project Settings → General** and note the **Region** (for example *West EU (London)* or *East US*).
+2. In Vercel, open your project → **Settings → Functions → Function Region**, choose the closest match (London → `lhr1`, Frankfurt → `fra1`, Ireland → `dub1`, East US → `iad1`), save, and redeploy.
 
 ### Using the admin portal
 - Go to `your-site/admin` and log in with `ADMIN_EMAIL` and `ADMIN_PASSWORD`.

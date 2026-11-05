@@ -35,7 +35,7 @@ export function ProfileForm({ tailor }: { tailor: Tailor }) {
           <Field label="Work email" htmlFor="email" hint="Used to log in. Contact support to change it.">
             <Input id="email" value={tailor.email} disabled readOnly className="opacity-70" />
           </Field>
-          <Field label="Phone" htmlFor="phone">
+          <Field label="Phone" htmlFor="phone" hint="Shown on order links so clients can call or WhatsApp you.">
             <Input id="phone" name="phone" type="tel" defaultValue={tailor.phone ?? ""} placeholder="Optional" />
           </Field>
           <Field label="Default unit" htmlFor="unit" hint="Used for new measurement sets.">

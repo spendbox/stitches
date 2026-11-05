@@ -4,11 +4,12 @@ import { db } from "@/lib/supabase";
 import { getPayments, getTailors, totalsByCurrency } from "@/lib/adminData";
 import { date, money } from "@/lib/format";
 import { deletePayment, saveAdminNote } from "@/app/actions/admin";
-import { Avatar, Button, Card, Textarea } from "@/components/ui";
+import { Avatar, Card, Textarea } from "@/components/ui";
 import BackLink from "@/components/BackLink";
 import ConfirmDelete from "@/components/ConfirmDelete";
 import { AccountBadge, SetupNotice, StatusActions } from "@/components/admin/AdminUI";
 import { PaymentForm } from "@/components/admin/AdminForms";
+import SubmitButton from "@/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -77,7 +78,7 @@ export default async function AdminUser({ params }: { params: Promise<{ id: stri
               <input type="hidden" name="id" value={t.id} />
               <label htmlFor="admin_note" className="font-display text-lg font-semibold">Private note</label>
               <Textarea id="admin_note" name="admin_note" defaultValue={t.admin_note ?? ""} placeholder="Only admins see this. e.g. Paid for 1 year, renews Nov 2027" />
-              <Button variant="secondary" className="self-end">Save note</Button>
+              <SubmitButton variant="secondary" className="self-end">Save note</SubmitButton>
             </Card>
           </form>
         </div>
