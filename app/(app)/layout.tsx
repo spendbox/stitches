@@ -10,7 +10,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <div className="min-w-0 flex-1">
         <MobileTop />
         <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-12 lg:pt-10">
-          {tailor.status !== "active" && <TrialBanner business={tailor.business_name} />}
+          {tailor.status !== "active" && <TrialBanner business={tailor.business_name} name={tailor.full_name} email={tailor.email} />}
           {children}
         </main>
       </div>

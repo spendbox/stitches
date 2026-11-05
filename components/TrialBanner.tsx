@@ -2,10 +2,21 @@ import { Sparkles, MessageCircle, Mail } from "lucide-react";
 import { adminContact } from "@/lib/admin";
 
 /** Shown to every account the admin has not yet approved. */
-export default function TrialBanner({ business }: { business: string }) {
+export default function TrialBanner({ business, name, email: userEmail }: { business: string; name: string; email: string }) {
   const { email, phone } = adminContact();
   const digits = phone?.replace(/[^\d]/g, "");
-  const msg = encodeURIComponent(`Hello, I'd like to pay for full access to Onepad for "${business}".`);
+  // Spell out who is asking so the admin can find the account under Users.
+  const msg = encodeURIComponent(
+    [
+      "Hello, I'd like to pay for full access to my Onepad account.",
+      "",
+      `Business name: ${business}`,
+      `My name: ${name}`,
+      `Login email: ${userEmail}`,
+      "",
+      "Please send me the payment details.",
+    ].join("\n")
+  );
   const href = digits ? `https://wa.me/${digits}?text=${msg}` : email ? `mailto:${email}?subject=${encodeURIComponent("Onepad full access")}&body=${msg}` : null;
 
   return (
