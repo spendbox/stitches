@@ -7,6 +7,7 @@ import { adminLogout } from "@/app/actions/admin";
 import { Logo } from "../Logo";
 import { ThemeButton } from "../ThemeToggle";
 import { cx } from "../ui";
+import PendingButton from "../PendingButton";
 
 const tabs = [
   { href: "/admin", label: "Overview", icon: LayoutGrid, exact: true },
@@ -36,9 +37,9 @@ export function AdminNav() {
         <div className="ml-auto flex items-center gap-1">
           <ThemeButton />
           <form action={adminLogout}>
-            <button className="flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-muted hover:bg-surface-2 hover:text-ink">
+            <PendingButton pendingText="" className="flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-muted hover:bg-surface-2 hover:text-ink">
               <LogOut className="h-4 w-4" /> <span className="hidden sm:inline">Log out</span>
-            </button>
+            </PendingButton>
           </form>
         </div>
       </div>

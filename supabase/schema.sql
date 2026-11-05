@@ -70,6 +70,14 @@ create table if not exists public.orders (
 create index if not exists orders_tailor_status_idx on public.orders (tailor_id, status, due_date);
 create index if not exists orders_client_idx on public.orders (client_id);
 
+-- ---------- Order status links for clients ----------
+-- Each order gets a long random code. Anyone with the link /o/<code> can see that
+-- one order's status (no login). The tailor can make a new code to cancel an old link.
+alter table public.orders add column if not exists share_token text
+  default replace(gen_random_uuid()::text, '-', '');
+update public.orders set share_token = replace(gen_random_uuid()::text, '-', '') where share_token is null;
+create unique index if not exists orders_share_token_idx on public.orders (share_token);
+
 -- ---------- Account access (set by the admin at /admin) ----------
 -- trial   = new sign-up, can use the app and sees a "pay for full access" notice
 -- active  = paid and approved by the admin

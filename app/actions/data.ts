@@ -178,6 +178,16 @@ export async function setOrderStatus(form: FormData) {
   if (client_id) revalidatePath(`/clients/${client_id}`);
 }
 
+/** Make a new client link for an order; the old link stops working. */
+export async function resetShareLink(form: FormData) {
+  const tailor_id = await requireTailorId();
+  const id = str(form.get("id"));
+  if (!id) return;
+  const token = crypto.randomUUID().replace(/-/g, "");
+  await db().from("orders").update({ share_token: token }).eq("id", id).eq("tailor_id", tailor_id);
+  revalidatePath(`/orders/${id}`);
+}
+
 export async function deleteOrder(form: FormData) {
   const tailor_id = await requireTailorId();
   const id = str(form.get("id"));

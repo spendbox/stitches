@@ -1,9 +1,10 @@
 import { LogOut } from "lucide-react";
 import { requireTailor } from "@/lib/session";
 import { logout } from "@/app/actions/auth";
-import { Button, Card, PageHeader } from "@/components/ui";
+import { Card, PageHeader } from "@/components/ui";
 import { ThemeSwitch } from "@/components/ThemeToggle";
 import { PasswordForm, ProfileForm } from "@/components/SettingsForms";
+import SubmitButton from "@/components/SubmitButton";
 
 export const metadata = { title: "Settings" };
 
@@ -31,9 +32,9 @@ export default async function Settings() {
       </Card>
       <PasswordForm />
       <form action={logout}>
-        <Button variant="secondary" className="w-full sm:w-auto">
+        <SubmitButton variant="secondary" className="w-full sm:w-auto" pendingText="Logging out…">
           <LogOut className="h-4 w-4" /> Log out
-        </Button>
+        </SubmitButton>
       </form>
     </div>
   );
